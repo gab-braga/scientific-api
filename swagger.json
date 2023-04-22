@@ -1,0 +1,594 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Científica",
+        "version": "1.0.0"
+    },
+    "components": {
+        "schemas": {
+            "Scientist": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Nome do cientista"
+                    },
+                    "dateBirth": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Data de nacimento do cientista"
+                    },
+                    "dateDeath": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Data de falecimento do cientista"
+                    },
+                    "countryOrigin": {
+                        "type": "string",
+                        "description": "País de origem do cientista"
+                    },
+                    "image": {
+                        "type": "string",
+                        "description": "Url da foto do cientista"
+                    },
+                    "biography": {
+                        "type": "string",
+                        "description": "Bibliografia do cientista"
+                    },
+                    "studyUID": {
+                        "type": "string",
+                        "description": "UID para identificação do campo de estudo do cientista"
+                    }
+                }
+            },
+            "Contribution": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Título da contribuição científica"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Tipo da contribuição científica"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Descrição da contribuição científica"
+                    },
+                    "dateDiscovery": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Data da descoberta da contribuição científica"
+                    },
+                    "datePublished": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Data de publicação da contribuição científica"
+                    },
+                    "scintistsUID": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "UID do cientista"
+                        }
+                    }
+                }
+            },
+            "Study": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Título do campo de estudo"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Descrição do campo de estudo"
+                    },
+                    "abbreviation": {
+                        "type": "string",
+                        "description": "Abreviação do campo de estudo"
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/scientists": {
+            "get": {
+                "tags": [
+                    "Scientist"
+                ],
+                "summary": "Consultar todos os cientistas",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Consulta efetuada corretamente."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a consulta."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Scientist"
+                ],
+                "summary": "Criar novo cientista",
+                "requestBody": {
+                    "description": "Dados do cientista a ser adicionado",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Scientist"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação efetuada corretamente."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a operação."
+                    }
+                }
+            }
+        },
+        "/scientists/{uid}": {
+            "get": {
+                "tags": [
+                    "Scientist"
+                ],
+                "summary": "Consultar cientista por uid",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "UID do cientista para obter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Consulta efetuada corretamente."
+                    },
+                    "404": {
+                        "description": "Não foi possível encontrar o registro."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a consulta."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Scientist"
+                ],
+                "summary": "Atualizar dados de cientista",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "UID do cientista para editar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Dados do cientista a ser editado",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Scientist"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação efetuada corretamente."
+                    },
+                    "404": {
+                        "description": "Não foi possível encontrar o registro."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a operação."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Scientist"
+                ],
+                "summary": "Remover cientista",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "UID do cientista para remover",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação efetuada corretamente."
+                    },
+                    "404": {
+                        "description": "Não foi possível encontrar o registro."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a operação."
+                    }
+                }
+            }
+        },
+        "/scientists/study/{uid}": {
+            "get": {
+                "tags": [
+                    "Scientist"
+                ],
+                "summary": "Consultar cientista por uid do campo de estudo",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "UID do campo de estudo para filtrar a consulta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Consulta efetuada corretamente."
+                    },
+                    "404": {
+                        "description": "Não foi possível encontrar o registro."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a consulta."
+                    }
+                }
+            }
+        },
+        "/contributions": {
+            "get": {
+                "tags": [
+                    "Contribution"
+                ],
+                "summary": "Consultar todas as contribuições científicas",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Consulta efetuada corretamente."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a consulta."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Contribution"
+                ],
+                "summary": "Criar nova contribuição científica",
+                "requestBody": {
+                    "description": "Dados da contribuição científica a ser adicionado",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Contribution"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação efetuada corretamente."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a operação."
+                    }
+                }
+            }
+        },
+        "/contributions/{uid}": {
+            "get": {
+                "tags": [
+                    "Contribution"
+                ],
+                "summary": "Consultar contribuição científica por uid",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "UID da contribuição científica para obter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Consulta efetuada corretamente."
+                    },
+                    "404": {
+                        "description": "Não foi possível encontrar o registro."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a consulta."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Contribution"
+                ],
+                "summary": "Atualizar dados da contribuição científica",
+                "requestBody": {
+                    "description": "Dados da contribuição científica a ser editado",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Contribution"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "UID da contribuição científica para editar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação efetuada corretamente."
+                    },
+                    "404": {
+                        "description": "Não foi possível encontrar o registro."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a operação."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Contribution"
+                ],
+                "summary": "Remover contribuição científica",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "UID da contribuição científica para remover",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação efetuada corretamente."
+                    },
+                    "404": {
+                        "description": "Não foi possível encontrar o registro."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a operação."
+                    }
+                }
+            }
+        },
+        "/studies": {
+            "get": {
+                "tags": [
+                    "Study"
+                ],
+                "summary": "Consultar todos os campos de estudo",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Consulta efetuada corretamente."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a consulta."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Study"
+                ],
+                "summary": "Criar novo campo de estudo",
+                "requestBody": {
+                    "description": "Dados do campo de estudo a ser adicionado",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Study"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação efetuada corretamente."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a operação."
+                    }
+                }
+            }
+        },
+        "/studies/{uid}": {
+            "get": {
+                "tags": [
+                    "Study"
+                ],
+                "summary": "Consultar campo de estudo por uid",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "UID do campo de estudo para obter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Consulta efetuada corretamente."
+                    },
+                    "404": {
+                        "description": "Não foi possível encontrar o registro."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a consulta."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Study"
+                ],
+                "summary": "Atualizar dados do campo de estudo",
+                "requestBody": {
+                    "description": "Dados do campo de estudo a ser editado",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Study"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "UID do campo de estudo para editar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação efetuada corretamente."
+                    },
+                    "404": {
+                        "description": "Não foi possível encontrar o registro."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a operação."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Study"
+                ],
+                "summary": "Remover campo de estudo",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "UID do campo de estudo para remover",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação efetuada corretamente."
+                    },
+                    "404": {
+                        "description": "Não foi possível encontrar o registro."
+                    },
+                    "500": {
+                        "description": "Erro interno durante a operação."
+                    }
+                }
+            }
+        }
+    },
+    "consumes": [
+        "application/json"
+    ]
+}

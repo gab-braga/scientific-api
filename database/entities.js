@@ -23,7 +23,7 @@ const Scientist = sequelize.define("scientists", {
         allowNull: false
     },
     image: {
-        type: DataTypes.TEXT
+        type: DataTypes.STRING(255)
     },
     biography: {
         type: DataTypes.TEXT
@@ -55,13 +55,16 @@ const Contribution = sequelize.define("contributions", {
     },
     datePublished: {
         type: DataTypes.DATEONLY
+    },
+    image: {
+        type: DataTypes.STRING(255)
     }
 },
 {
     freezeTableName: true
 });
 
-const FieldStudy = sequelize.define("fields_study", {
+const Study = sequelize.define("studies", {
     uid: {
         type: DataTypes.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -73,35 +76,27 @@ const FieldStudy = sequelize.define("fields_study", {
     },
     description: {
         type: DataTypes.TEXT,
+    },
+    abbreviation: {
+        type: DataTypes.STRING(50)
     }
 },
 {
     freezeTableName: true
 });
 
-const ScientistContribution = sequelize.define('scientists_contributions', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-},
-{
-    freezeTableName: true
-});
+Study.hasOne(Scientist, { allowNull: false, foreignKey: "studyUID" });
+Scientist.belongsTo(Study, { allowNull: false, foreignKey: "studyUID" });
 
 Scientist.belongsToMany(Contribution, {
     allowNull: false,
     foreignKey: "contributionUID",
-    through: ScientistContribution
+    through: "scientists_contributions"
 });
 Contribution.belongsToMany(Scientist, {
     allowNull: false,
     foreignKey: "scientistUID",
-    through: ScientistContribution
+    through: "scientists_contributions"
 });
 
-FieldStudy.hasOne(Contribution, { allowNull: false, foreignKey: "studyUID" });
-Contribution.belongsTo(FieldStudy, { allowNull: false, foreignKey: "studyUID" });
-
-module.exports = { Scientist, Contribution, FieldStudy };
+module.exports = { Scientist, Contribution, Study };

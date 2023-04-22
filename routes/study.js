@@ -1,11 +1,11 @@
 const { Router } = require("express");
 const router = Router();
 
-const { FieldStudy } = require("../database/entities");
+const { Study } = require("../database/entities");
 
 router.get("/studies", async (req, res) => {
     try {
-        const studies = await FieldStudy.findAll();
+        const studies = await Study.findAll();
         res.status(200).json(studies);
     }
     catch(error) {
@@ -17,7 +17,7 @@ router.get("/studies", async (req, res) => {
 router.get("/studies/:uid", async (req, res) => {
     const { uid } = req.params;
     try {
-        const study = await FieldStudy.findByPk(uid);
+        const study = await Study.findByPk(uid);
         if(study) {
             res.status(200).json(study);
         }
@@ -32,9 +32,9 @@ router.get("/studies/:uid", async (req, res) => {
 });
 
 router.post("/studies", async (req, res) => {
-    const { title, description } = req.body;
+    const { title, description, abbreviation } = req.body;
     try {
-        const study = await FieldStudy.create({ title, description });
+        const study = await Study.create({ title, description, abbreviation });
         res.status(201).json(study);
     }
     catch(error) {
@@ -45,11 +45,11 @@ router.post("/studies", async (req, res) => {
 
 router.put("/studies/:uid", async (req, res) => {
     const { uid } = req.params;
-    const { title, description } = req.body;
+    const { title, description, abbreviation } = req.body;
     try {
-        const study = await FieldStudy.findByPk(uid);
+        const study = await Study.findByPk(uid);
         if(study) {
-            await study.update({ title, description });
+            await study.update({ title, description, abbreviation });
             res.status(200).json(study);
         }
         else {
@@ -65,10 +65,10 @@ router.put("/studies/:uid", async (req, res) => {
 router.delete("/studies/:uid", async (req, res) => {
     const { uid } = req.params;
     try {
-        const study = await FieldStudy.findByPk(uid);
+        const study = await Study.findByPk(uid);
         if(study) {
             await study.destroy();
-            res.status(200).json(study);
+            res.status(200).json({ message: "Campo de estudo removido." });
         }
         else {
             res.status(404).json({ message: "Campo de estudo não encontrado." });
