@@ -12,7 +12,7 @@ Com ela é possível manipular informações de cientistas, contribuições cien
 
 ## Como executar a API
 Para executar a API, siga os passos abaixo:
-* Faça o clone do repositório para sua máquina: `git clone https://github.com/F-Gabriel-Braga/scientific-api.git`
+* Faça o clone do repositório para sua máquina: `git clone https://github.com/gab-braga/scientific-api.git`
 * Instale as dependências do projeto: `cd scientific-api` `npm install`
 * Crie o banco de dados `scientific_db` utilizando o MySQL e atualize as credenciais de acesso
 * Inicie o servidor: `npm start`
